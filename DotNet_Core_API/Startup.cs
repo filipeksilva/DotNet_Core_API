@@ -38,11 +38,13 @@ namespace DotNet_Core_API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();            
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors();            
+
+            app.UseAuthorization();            
 
             app.UseEndpoints(endpoints =>
             {

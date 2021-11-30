@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace DotNet_Core_API.Controllers
 {
+    [EnableCors()]
     [Route("clientes")]
     [ApiController]
     public class ClientesController : ControllerBase
