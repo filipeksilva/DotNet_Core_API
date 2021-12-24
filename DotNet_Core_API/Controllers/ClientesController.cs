@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Cors;
 
 namespace DotNet_Core_API.Controllers
 {
-    [EnableCors()]
     [Route("clientes")]
     [ApiController]
+    [EnableCors("PermitirApiRequest")]
     public class ClientesController : ControllerBase
     {
         [HttpGet]

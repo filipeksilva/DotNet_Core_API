@@ -28,6 +28,16 @@ namespace DotNet_Core_API
         {
             Conexao.Dados = Configuration.GetConnectionString("ConexaoDB");
             services.AddControllers();
+
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("PermitirApiRequest",
+                        builder =>
+                        builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()
+                    );
+                }
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
