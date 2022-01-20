@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace DotNet_Core_API.Controllers
 {
@@ -23,10 +23,19 @@ namespace DotNet_Core_API.Controllers
         }
 
         [HttpPost]
-        [Route("criar")]
+        [Route("")]
         public Cliente Criar([FromBody] Cliente cliente)
         {
             return cliente.Salvar();
+        }
+
+
+        [HttpGet]
+        [Route("{id}")]
+        public Cliente Atualizar(int id)
+        {
+
+            return Cliente.BuscaPorId(id);
         }
 
         [HttpPut]
@@ -34,14 +43,14 @@ namespace DotNet_Core_API.Controllers
         public Cliente Atualizar(int id, [FromBody] Cliente cliente)
         {
             cliente.Id = id;
-            return cliente.Salvar();
-        }
+            return cliente.Salvar_Com_SqlConnection();
+        }        
 
         [HttpDelete]
         [Route("{id}")]
         public void Excluir(int id)
         {
-         Cliente.Excluir(id);
+            Cliente.Excluir(id);
         }
     }
 }

@@ -21,13 +21,14 @@ namespace Models
 
         public Cliente Salvar()
         {
+            db = new DBContexto();
             if (this.Id > 0)
             {
                 db.Clientes.Update(this);
             }
             else
             {
-                db.Clientes.Add(this);              
+                db.Clientes.Add(this);
             }
             db.SaveChanges();
             return this;
@@ -42,12 +43,19 @@ namespace Models
 
         }
 
+        public static Cliente BuscaPorId(int id)
+        {
+            db = new DBContexto();
+            return db.Clientes.Where(c => c.Id == id).First();
+        }
+
         public static List<Cliente> Todos()
         {
+            db = new DBContexto();
             return db.Clientes.ToList();
         }
 
-            public static List<Cliente> Todos_Com_SqlConnection()
+        public static List<Cliente> Todos_Com_SqlConnection()
         {
             var lista = new List<Cliente>();
 
@@ -82,17 +90,36 @@ namespace Models
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("CriarCliente @nome, @telefone, @endereco", conn);
-                cmd.Parameters.Add("@nome", SqlDbType.VarChar);
-                cmd.Parameters["@nome"].Value = this.Nome;
+                if(this.Id > 0)
+                {
+                    SqlCommand cmd = new SqlCommand("UPDATE Clientes SET Nome = @nome, Telefone = @telefone, Endereco = @endereco WHERE Id = @id", conn);
+                    cmd.Parameters.Add("@id", SqlDbType.Int);
+                    cmd.Parameters["@id"].Value = this.Id;
 
-                cmd.Parameters.Add("@telefone", SqlDbType.VarChar);
-                cmd.Parameters["@telefone"].Value = this.Telefone;
+                    cmd.Parameters.Add("@telefone", SqlDbType.VarChar);
+                    cmd.Parameters["@telefone"].Value = this.Telefone;
 
-                cmd.Parameters.Add("@endereco", SqlDbType.VarChar);
-                cmd.Parameters["@endereco"].Value = this.Endereco;
+                    cmd.Parameters.Add("@endereco", SqlDbType.VarChar);
+                    cmd.Parameters["@endereco"].Value = this.Endereco;
 
-                this.Id = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    SqlCommand cmd = new SqlCommand("CriarCliente @nome, @telefone, @endereco", conn);
+                    cmd.Parameters.Add("@nome", SqlDbType.VarChar);
+                    cmd.Parameters["@nome"].Value = this.Nome;
+
+                    cmd.Parameters.Add("@telefone", SqlDbType.VarChar);
+                    cmd.Parameters["@telefone"].Value = this.Telefone;
+
+                    cmd.Parameters.Add("@endereco", SqlDbType.VarChar);
+                    cmd.Parameters["@endereco"].Value = this.Endereco;
+
+                    this.Id = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                
 
                 conn.Close();
             }
