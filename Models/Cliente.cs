@@ -96,6 +96,9 @@ namespace Models
                     cmd.Parameters.Add("@id", SqlDbType.Int);
                     cmd.Parameters["@id"].Value = this.Id;
 
+                    cmd.Parameters.Add("@nome", SqlDbType.VarChar);
+                    cmd.Parameters["@nome"].Value = this.Nome;
+
                     cmd.Parameters.Add("@telefone", SqlDbType.VarChar);
                     cmd.Parameters["@telefone"].Value = this.Telefone;
 
